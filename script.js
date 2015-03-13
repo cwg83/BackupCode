@@ -190,7 +190,7 @@ function SendToWorkLogAD() {
   
   sheet1.getRange("A2:W2").copyTo(repsheet.getRange(repsheet.getLastRow()+1,1,1,7), {contentsOnly:true});
   sheet1.getRange("A2:W2").copyTo(sheet2.getRange(sheet2.getLastRow()+1,1,1,7), {contentsOnly:true});
-    SpreadsheetApp.getActiveSheet().getRange('A3:F8').setValue('');
+  SpreadsheetApp.getActiveSheet().getRange('A3:F8').setValue('');
   SpreadsheetApp.getActiveSheet().getRange('A3').setValue('Ctrl+SHIFT+V');
   SpreadsheetApp.getActiveSheet().getRange('B18').setValue('Chargeback');
   SpreadsheetApp.getActiveSheet().getRange('B19').setValue('Yes');
