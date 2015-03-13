@@ -24,7 +24,6 @@ function onEdit(event)
     sheetCL.getRange(CellRow, CellColumn).setFormula(CLD6);
     Browser.msgBox("BAD HUMAN! NO CHANGE FORMULA!");
   }
-  
   if (CellColumn == 4 & CellRow == 7){
     sheetCL.getRange(CellRow, CellColumn).setFormula(CLD7);
     Browser.msgBox("BAD HUMAN! NO CHANGE FORMULA!");
