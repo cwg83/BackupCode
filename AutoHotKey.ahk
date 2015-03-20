@@ -122,26 +122,32 @@ Sleep 10
 SendInput {TAB 2}{LEFT}{TAB 2}	
 return
 
-::rcred::
-credvar = balance, representing (prior credit), added to CB and logging
-SendInput %credvar% {TAB}{LEFT}{TAB}{TAB}
+:*:rcred::
+rcredvar = balance, representing (prior credit), added to CB and logging
+SendInput %rcredvar% {TAB}{TAB}
 return
 
-::rfra::
-credvar = balance, representing (do not believe transaction is fraudulent), added to CB and logging
-SendInput %credvar% {TAB}{LEFT}{TAB}{TAB}
+:*:rfra::
+rfravar = balance, representing (do not believe this transaction is fraudulent), added to CB and logging
+SendInput %rfravar% {TAB}{TAB}
+return
+
+:*:rrec::
+rrecvar = balance, representing (merchandise received and/or redeemed), added to CB and logging
+SendInput %rrecvar% {TAB}{TAB}
 return
 
 ; CHARGEBACK OBJECT HOTKEY-----------------------------------------------------------------------------------------
 :*:dd::
 datevar = %A_MM%/%A_DD%/%A_YYYY%
+ClipBoard = %ClipBoard%
 lastClip :=ClipBoard
 StringLen, length, lastClip
 if length < 7
 return
 if length > 16
 return
-if length = 15 ;If the case # is 15 characters / is a PayPal Case #
+if length = 15 ;If the case # is from PayPal
 {
 SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%datevar%{TAB}x{TAB 2}
 Sleep 10
@@ -153,7 +159,7 @@ SendInput {Tab 3}{Up 4}
 Sleep 10
 SendInput {Shift Down}{Tab 5}{Shift Up}{TAB 8}
 }
-else 
+else ;If the case # is NOT from PayPal
 {
 SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%datevar%{TAB 3}
 Sleep 10
@@ -167,6 +173,7 @@ SendInput {Shift Down}{Tab 5}{Shift Up}{TAB 8}
 }
 return
 
+
 ; WINDOWS KEY + Q = KEEP CURRENT WINDOW IN FOREGROUND----------------------------------------------------------------
-;always on top Win + q to toggle
+; always on top Win + q to toggle
 #q:: Winset, Alwaysontop, , A
