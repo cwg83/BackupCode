@@ -1,4 +1,7 @@
 SendMode, Input
+SetCapsLockState, AlwaysOff 
+SetScrollLockState, AlwaysOff 
+Capslock::Shift
 
 ; CHECK WHICH PLATFORM COPIED CASE # IS FROM ------------------------------------------------------------------------
 #F2::
@@ -138,7 +141,7 @@ SendInput %rrecvar% {TAB}{TAB}
 return
 
 ; CHARGEBACK OBJECT HOTKEY-----------------------------------------------------------------------------------------
-:*:dd::
+XButton2::
 datevar = %A_MM%/%A_DD%/%A_YYYY%
 ClipBoard = %ClipBoard%
 lastClip :=ClipBoard
@@ -173,6 +176,7 @@ SendInput {Shift Down}{Tab 5}{Shift Up}{TAB 8}
 }
 return
 
+XButton1::RButton
 
 ; WINDOWS KEY + Q = KEEP CURRENT WINDOW IN FOREGROUND----------------------------------------------------------------
 ; always on top Win + q to toggle
