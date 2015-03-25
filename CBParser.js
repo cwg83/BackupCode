@@ -55,7 +55,10 @@ function SendToWorkLogCL() {
   var rep = sheet1.getRange("D15");
   var repvalue = rep.getValue();
   
-  if (repvalue == 'Yes') {
+  if (ordervalue == "") {
+  Browser.msgBox("Please enter a valid Order #");
+  
+  }else if (repvalue == 'Yes') {
   
   sheet1.getRange("A2:W2").copyTo(repsheet.getRange(repsheet.getLastRow()+1,1,1,7), {contentsOnly:true});
   sheet1.getRange("A2:W2").copyTo(sheet2.getRange(sheet2.getLastRow()+1,1,1,7), {contentsOnly:true});
