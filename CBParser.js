@@ -127,6 +127,7 @@ function SendToWorkLogPP() { //This is the script for the PayPal sheet
   SpreadsheetApp.getActiveSheet().getRange('A8').setValue('Trans Date:');
   SpreadsheetApp.getActiveSheet().getRange('A9').setValue('Case #:');
   SpreadsheetApp.getActiveSheet().getRange('A10').setValue('Reason Code:');
+  SpreadsheetApp.getActiveSheet().getRange('A11').setValue('Dispute Date:');
   
   }else{
   
@@ -145,6 +146,7 @@ function SendToWorkLogPP() { //This is the script for the PayPal sheet
   SpreadsheetApp.getActiveSheet().getRange('A8').setValue('Trans Date:');
   SpreadsheetApp.getActiveSheet().getRange('A9').setValue('Case #:');
   SpreadsheetApp.getActiveSheet().getRange('A10').setValue('Reason Code:');
+  SpreadsheetApp.getActiveSheet().getRange('A11').setValue('Dispute Date:');
 
  }
  }
