@@ -1,10 +1,63 @@
 SendMode, Input
-SetCapsLockState, AlwaysOff 
-SetScrollLockState, AlwaysOff 
-Capslock::Shift
+#InstallKeybdHook
+#singleinstance force
+#Persistent   ; without this line the script will exit
+KeyHistory
+
+; CUSTOM MENU -------------------------------------------------------------------------------------------------------
+Menu, MyMenu, Add, CB Accept, CBAccAction
+Menu, MyMenu, Add, Item2, Item2Action
+Menu, MyMenu, Add  ; Add a separator line.
+Menu, MyMenu, Add, Item3, Item3Action
+Menu, MyMenu, Add, Item4, Item4Action
+; Create another menu destined to become a submenu of the above menu.
+Menu, Submenu1, Add, Item1, SubMenu1Action
+Menu, Submenu1, Add, Item2, SubMenu2Action
+Menu, MyMenu, Add, Test Submenu, :Submenu1
+Menu, MyMenu, Add  ; Add a separator line.
+Menu, MyMenu, Add, MenuClose, MenuCloseAction
+
+return  ; End of script's auto-execute section.
+
+CBAccAction:
+accvar = balance, not representing, added to CB and logging, deactivating to change status
+SendInput %accvar% {SHIFT DOWN}{TAB 2}{SHIFT UP}{RIGHT}{TAB} 
+Sleep 10
+SendInput ch 
+Sleep 10
+SendInput {TAB 2}{LEFT}{TAB 2}	
+return
+
+Item2Action:
+Send Item2 Test
+return
+
+Item3Action:
+Send Item3 Test
+return
+
+Item4Action:
+Send Item4 Test
+return
+
+SubMenu1Action:
+Send Sub1Test
+return
+
+SubMenu2Action:
+Send Sub2Test
+return
+
+MenuCloseAction:
+return
+
+XButton1::RButton
+;XButton1::
+Menu, MyMenu, Show
+return
 
 ; CHECK WHICH PLATFORM COPIED CASE # IS FROM ------------------------------------------------------------------------
-#F2::
+#F1::
 lastClip :=ClipBoard
 StringLen, length, lastClip
 if length = 14
@@ -44,15 +97,14 @@ RButton::
 ; RISK HOTKEYS-------------------------------------------------------------------------------------------------------
 ::2c::2 different cards with AVS Y and same billing,  
 ::bi::biz ISP/ORG,
-::ci::custom image: good,
+::ci::custom image: good
 ::fb::Facebook match 
 ::fs::future send, 
 ::ges::good email syntax, 
-::gm::good message, 
-::om::okay message,
+::gm::good message
+::om::okay message
 ::ha::high amount for brand,
 ::hd::high distance, 
-::hm::high MF, 
 ::hr::high-risk brand,
 ::la::low amount for brand,
 ::ld::low distance, 
@@ -86,9 +138,13 @@ RButton::
 ::okp::okay pattern
 ::okx::okay history
 ::mfo::multiple forms of payment
+::ccc::Please feel free to contact our customer care department at 855-741-1209, Option 2, if you have any other questions or concerns.
+::refacc::Issued a manual refund for the accessory charge on this transaction as requested by Customer Care.
+::refship::Issued a manual refund for the shipping charge on this transaction as requested by Customer Care.
+
 
 ; MISC. PAYMENTS-----------------------------------------------------------------------------------------------------
-::upr::
+::uprr::
 uprvar = UPR Report (Unprocessed Returns Report: A credit related to this transaction may have failed to transmit) {TAB}
 SendInput %uprvar%
 Return
@@ -99,7 +155,7 @@ SendInput %fdvar%
 Return
 
 ::failcred::
-failcredvar = Automatic credit that typically occurs when an eGC is returned was not present. Issued a manual credit in CyberSource for{SPACE}
+failcredvar = Automatic credit that typically occurs when an eGC is returned was not present. Issued a manual credit.
 SendInput %failcredvar%
 Return
 
@@ -112,7 +168,14 @@ return
 
 :*:priorcred::
 priorcredvar = This cardholder has already been refunded for this transaction. Proof via payment software screenshot is attached.
-SendInput %priorcredvar% {Tab}{Tab}{Enter}
+SendInput %priorcredvar%
+return
+
+:*:ppp::
+paypalvar = paypal{+}@cashstar.com
+SendInput ^a
+SendInput %paypalvar%
+SendInput {Left 13}
 return
 
 ; CHARGEBACK CLOSING NOTES-------------------------------------------------------------------------------------------
@@ -122,7 +185,7 @@ SendInput %accvar% {SHIFT DOWN}{TAB 2}{SHIFT UP}{RIGHT}{TAB}
 Sleep 10
 SendInput ch 
 Sleep 10
-SendInput {TAB 2}{LEFT}{TAB 2}	
+SendInput {TAB 2}{LEFT}{TAB 2}
 return
 
 :*:rcred::
@@ -142,9 +205,13 @@ return
 
 ; CHARGEBACK OBJECT HOTKEY-----------------------------------------------------------------------------------------
 XButton2::
-datevar = %A_MM%/%A_DD%/%A_YYYY%
+today = %a_now%
+today += -1, days
+FormatTime, today, %today%, MM/dd/yyyy 
+
 ClipBoard = %ClipBoard%
 lastClip :=ClipBoard
+
 StringLen, length, lastClip
 if length < 7
 return
@@ -152,32 +219,71 @@ if length > 16
 return
 if length = 15 ;If the case # is from PayPal
 {
-SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%datevar%{TAB}x{TAB 2}
+SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%today%{TAB}x{TAB 2}
 Sleep 10
 SendInPut x{TAB}
 Sleep 10
 SendInput ^v {Tab}x
 Sleep 10
-SendInput {Tab 3}{Up 4}
+SendInput {Tab 3}f
 Sleep 10
-SendInput {Shift Down}{Tab 5}{Shift Up}{TAB 8}
+SendInput {Shift Down}{Tab 8}{Shift Up}{RIGHT}{LEFT 5}{Shift Down}{LEFT 2}{SHIFT UP}
 }
 else ;If the case # is NOT from PayPal
 {
-SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%datevar%{TAB 3}
+SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%today%{TAB 3}
 Sleep 10
 SendInPut x{TAB}
 Sleep 10
 SendInput ^v {Tab}x
 Sleep 10
-SendInput {Tab 3}{Up 4}
+SendInput {Tab 3}f
 Sleep 10
-SendInput {Shift Down}{Tab 5}{Shift Up}{TAB 8}
+SendInput {Shift Down}{Tab 8}{Shift Up}{RIGHT}{LEFT 5}{Shift Down}{LEFT 2}{SHIFT UP}
 }
 return
 
-XButton1::RButton
+:*:ddd::
+today = %a_now%
+today += -1, days
+FormatTime, today, %today%, MM/dd/yyyy 
 
-; WINDOWS KEY + Q = KEEP CURRENT WINDOW IN FOREGROUND----------------------------------------------------------------
-; always on top Win + q to toggle
-#q:: Winset, Alwaysontop, , A
+ClipBoard = %ClipBoard%
+lastClip :=ClipBoard
+
+StringLen, length, lastClip
+if length < 7
+return
+if length > 16
+return
+if length = 15 ;If the case # is from PayPal
+{
+SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%today%{TAB}x{TAB 2}
+Sleep 10
+SendInPut x{TAB}
+Sleep 10
+SendInput ^v {Tab}x
+Sleep 10
+SendInput {Tab 3}f
+Sleep 10
+SendInput {Shift Down}{Tab 8}{Shift Up}{RIGHT}{LEFT 5}{Shift Down}{LEFT 2}{SHIFT UP}
+}
+else ;If the case # is NOT from PayPal
+{
+SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%today%{TAB 3}
+Sleep 10
+SendInPut x{TAB}
+Sleep 10
+SendInput ^v {Tab}x
+Sleep 10
+SendInput {Tab 3}f
+Sleep 10
+SendInput {Shift Down}{Tab 8}{Shift Up}{RIGHT}{LEFT 5}{Shift Down}{LEFT 2}{SHIFT UP}
+}
+return
+
+; RANDOM STUFF ------------------------------------------------------------------------------------------------------
+SetCapsLockState, AlwaysOff 
+SetScrollLockState, AlwaysOff 
+Capslock::Shift
+#SPACE::  Winset, Alwaysontop, , A
