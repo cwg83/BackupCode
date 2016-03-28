@@ -15,6 +15,7 @@ function SendToWorkLogCL() { //This is the script for the ClientLine sheet
   var purchase = sheet1.getRange("B15");
   var stage = sheet1.getRange("B9");
   var approver = sheet1.getRange("B18");
+
   
   SpreadsheetApp.getActiveSheet().getRange('B27').setValue(user);
   
@@ -39,6 +40,8 @@ function SendToWorkLogCL() { //This is the script for the ClientLine sheet
   }
   if (repvalue == 'Yes') {
   sheet1.getRange("A2:Y2").copyTo(repsheet.getRange(repsheet.getLastRow()+1,1,1,7), {contentsOnly:true});
+  var replastRow = repsheet.getLastRow(); //Find last row of RepSheet
+  repsheet.insertRowAfter(replastRow); //Append a blank row to the end of the repsheet
   }
   if (stage.getValue() == 'Retrieval' || stage.getValue() == 'Chargeback') {
   sheet1.getRange("A2:Y2").copyTo(sheet2.getRange(sheet2.getLastRow()+1,1,1,7), {contentsOnly:true});
@@ -54,6 +57,9 @@ function SendToWorkLogCL() { //This is the script for the ClientLine sheet
   SpreadsheetApp.getActiveSheet().getRange('B17').setValue('0'); //Balance
   SpreadsheetApp.getActiveSheet().getRange('E3:F39').setValue(''); //Paste Section
   SpreadsheetApp.getActiveSheet().getRange('E3').setValue('Ctrl+SHIFT+V'); //Paste Cell
+  
+  var lastRow = sheet2.getLastRow(); //Find last row of WorkLog
+  sheet2.insertRowAfter(lastRow); //Append a blank row to the end of the WorkLog
   }
   
 function SendToWorkLogCH() { //This is the script for the Chase sheet
@@ -95,6 +101,8 @@ function SendToWorkLogCH() { //This is the script for the Chase sheet
   }
   if (repvalue == 'Yes') {
   sheet1.getRange("A2:Y2").copyTo(repsheet.getRange(repsheet.getLastRow()+1,1,1,7), {contentsOnly:true});
+  var replastRow = repsheet.getLastRow(); //Find last row of RepSheet
+  repsheet.insertRowAfter(replastRow); //Append a blank row to the end of the repsheet
   }
   if (stage.getValue() == 'Retrieval' || stage.getValue() == 'Chargeback') {
   sheet1.getRange("A2:Y2").copyTo(sheet2.getRange(sheet2.getLastRow()+1,1,1,7), {contentsOnly:true});
@@ -110,6 +118,9 @@ function SendToWorkLogCH() { //This is the script for the Chase sheet
   SpreadsheetApp.getActiveSheet().getRange('B21:B26').setValue(''); //Rep Reason --> Documentation 4
   SpreadsheetApp.getActiveSheet().getRange('E3:F83').setValue(''); //Paste Section
   SpreadsheetApp.getActiveSheet().getRange('E3').setValue('Ctrl+SHIFT+V'); //Paste Cell
+  
+  var lastRow = sheet2.getLastRow(); //Find last row of WorkLog
+  sheet2.insertRowAfter(lastRow); //Append a blank row to the end of the WorkLog
   }
  
 function SendToWorkLogAM() { //This is the script for the Amex sheet
@@ -145,7 +156,8 @@ function SendToWorkLogAM() { //This is the script for the Amex sheet
   if (repvalue == 'Yes') {
   
   sheet1.getRange("A2:Y2").copyTo(repsheet.getRange(repsheet.getLastRow()+1,1,1,7), {contentsOnly:true});
-  
+  var replastRow = repsheet.getLastRow(); //Find last row of RepSheet
+  repsheet.insertRowAfter(replastRow); //Append a blank row to the end of the repsheet
   }
   
   sheet1.getRange("A2:Y2").copyTo(sheet2.getRange(sheet2.getLastRow()+1,1,1,7), {contentsOnly:true});
@@ -159,7 +171,9 @@ function SendToWorkLogAM() { //This is the script for the Amex sheet
   SpreadsheetApp.getActiveSheet().getRange('B17').setValue('0'); //Balance
   SpreadsheetApp.getActiveSheet().getRange('E3:F13').setValue(''); //Paste area
   SpreadsheetApp.getActiveSheet().getRange('E3').setValue('Ctrl+SHIFT+V'); //Paste cell
-
+  
+  var lastRow = sheet2.getLastRow(); //Find last row of WorkLog
+  sheet2.insertRowAfter(lastRow); //Append a blank row to the end of the WorkLog
   }
  
 function SendToWorkLogPP() { //This is the script for the PayPal sheet
@@ -195,7 +209,8 @@ function SendToWorkLogPP() { //This is the script for the PayPal sheet
   if (repvalue == 'Yes') {
   
   sheet1.getRange("A2:Y2").copyTo(repsheet.getRange(repsheet.getLastRow()+1,1,1,7), {contentsOnly:true});
-  
+  var replastRow = repsheet.getLastRow(); //Find last row of RepSheet
+  repsheet.insertRowAfter(replastRow); //Append a blank row to the end of the repsheet 
   }
   
   sheet1.getRange("A2:Y2").copyTo(sheet2.getRange(sheet2.getLastRow()+1,1,1,7), {contentsOnly:true});
@@ -214,7 +229,8 @@ function SendToWorkLogPP() { //This is the script for the PayPal sheet
   SpreadsheetApp.getActiveSheet().getRange('E10').setValue('Reason Code:');
   SpreadsheetApp.getActiveSheet().getRange('E11').setValue('Dispute Date:');
 
-  
+  var lastRow = sheet2.getLastRow(); //Find last row of WorkLog
+  sheet2.insertRowAfter(lastRow); //Append a blank row to the end of the WorkLog
   }
  
 function SendToWorkLogAD() { //This is the script for the Adyen sheet
@@ -250,7 +266,8 @@ function SendToWorkLogAD() { //This is the script for the Adyen sheet
   if (repvalue == 'Yes') {
   
   sheet1.getRange("A2:Y2").copyTo(repsheet.getRange(repsheet.getLastRow()+1,1,1,7), {contentsOnly:true});
-  
+  var replastRow = repsheet.getLastRow(); //Find last row of RepSheet
+  repsheet.insertRowAfter(replastRow); //Append a blank row to the end of the repsheet
   }
   
   sheet1.getRange("A2:Y2").copyTo(sheet2.getRange(sheet2.getLastRow()+1,1,1,7), {contentsOnly:true});
@@ -264,4 +281,6 @@ function SendToWorkLogAD() { //This is the script for the Adyen sheet
   SpreadsheetApp.getActiveSheet().getRange('E3:I8').setValue(''); //Paste area
   SpreadsheetApp.getActiveSheet().getRange('E3').setValue('Ctrl+SHIFT+V'); //Paste cell
   
+  var lastRow = sheet2.getLastRow(); //Find last row of WorkLog
+  sheet2.insertRowAfter(lastRow); //Append a blank row to the end of the WorkLog
  }
