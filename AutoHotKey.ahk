@@ -138,7 +138,7 @@ RButton::
 ::okp::okay pattern
 ::okx::okay history
 ::mfo::multiple forms of payment
-::ccc::Please feel free to contact our customer care department at 855-741-1209, Option 2, if you have any other questions or concerns.
+::ccc::Please contact our customer care department at 855-741-1209, Option 2, and they should be able to help you with this.
 ::refacc::Issued a manual refund for the accessory charge on this transaction as requested by Customer Care.
 ::refship::Issued a manual refund for the shipping charge on this transaction as requested by Customer Care.
 
@@ -183,8 +183,9 @@ return
 accvar = balance, not representing, added to CB and logging, deactivating to change status
 SendInput %accvar% {SHIFT DOWN}{TAB 2}{SHIFT UP}{RIGHT}{TAB} 
 Sleep 10
-SendInput ch 
+SendInput ch
 Sleep 10
+SendInput {ENTER}
 SendInput {TAB 2}{LEFT}{TAB 2}
 return
 
