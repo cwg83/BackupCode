@@ -110,7 +110,7 @@ function SendToWorkLogCH() { //This is the script for the Chase sheet
   SpreadsheetApp.getActiveSheet().getRange('B9').setFormula("=IF(A2=\"\",\"\",IF(E17=\" \",IF(RegExMatch($E$18,\"Chargeback\"),\"Chargeback\",\"Retrieval\"),IF(RegExMatch($E$19,\"Chargeback\"),\"Chargeback\",\"Retrieval\")))"); //Stage Reached
   SpreadsheetApp.getActiveSheet().getRange('B11').setFormula("=IF(A2=\"\",\"\",IF(E17=\" \",VLOOKUP($F$71,'Data Validation'!$E$2:$F,2,FALSE),VLOOKUP($F$72,'Data Validation'!$E$2:$F,2,FALSE)))"); //Brand  
   SpreadsheetApp.getActiveSheet().getRange('B14').setFormula("=IF(E17=\" \",IF(REGEXMATCH($F$26,\"CAD\"),\"CAD\",\"USD\"),IF(REGEXMATCH($F$27,\"CAD\"),\"CAD\",\"USD\"))"); //Currency
-  SpreadsheetApp.getActiveSheet().getRange('B15').setFormula("=IF($B$14=\"USD\",TRIM($B$5),\"\")"); //Purchase Amount  
+  SpreadsheetApp.getActiveSheet().getRange('B15').setFormula("=IF($A$2=\"\",\"\",IF($E$17=\" \",LEFT($F21,LEN($F21)-6),LEFT($F22,LEN($F22)-6)))"); //Purchase Amount  
   SpreadsheetApp.getActiveSheet().getRange('B16').setValue(''); //Order #
   SpreadsheetApp.getActiveSheet().getRange('B17').setValue('0'); //Balance 
   SpreadsheetApp.getActiveSheet().getRange('B18').setValue('Score Autoreleased'); //Approver
