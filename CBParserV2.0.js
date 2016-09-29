@@ -119,10 +119,10 @@
               contentsOnly: true
           });
       }
-      SpreadsheetApp.getActiveSheet().getRange('B9').setFormula("=IF(A2=\"\",\"\",IF(E17=\" \",IF(RegExMatch($E$18,\"Chargeback\"),\"Chargeback\",\"Retrieval\"),IF(RegExMatch($E$19,\"Chargeback\"),\"Chargeback\",\"Retrieval\")))"); //Stage Reached
-      SpreadsheetApp.getActiveSheet().getRange('B11').setFormula("=IF(A2=\"\",\"\",IF(E17=\" \",VLOOKUP($F$71,'Data Validation'!$E$2:$F,2,FALSE),VLOOKUP($F$72,'Data Validation'!$E$2:$F,2,FALSE)))"); //Brand  
-      SpreadsheetApp.getActiveSheet().getRange('B14').setFormula("=IF(E17=\" \",IF(REGEXMATCH($F$26,\"CAD\"),\"CAD\",\"USD\"),IF(REGEXMATCH($F$27,\"CAD\"),\"CAD\",\"USD\"))"); //Currency
-      SpreadsheetApp.getActiveSheet().getRange('B15').setFormula("=IF($A$2=\"\",\"\",IF($E$17=\" \",LEFT($F21,LEN($F21)-6),LEFT($F22,LEN($F22)-6)))"); //Purchase Amount  
+      SpreadsheetApp.getActiveSheet().getRange('B9').setFormula("=IF(A2=\"\",\"\",IF(E17=\"\",IF(RegExMatch($E$18,\"Chargeback\"),\"Chargeback\",\"Retrieval\"),IF(RegExMatch($E$19,\"Chargeback\"),\"Chargeback\",\"Retrieval\")))"); //Stage Reached
+      SpreadsheetApp.getActiveSheet().getRange('B11').setFormula("=IF(A2=\"\",\"\",IF(E17=\"\",VLOOKUP($F$71,'Data Validation'!$E$2:$F,2,FALSE),VLOOKUP($F$72,'Data Validation'!$E$2:$F,2,FALSE)))"); //Brand  
+      SpreadsheetApp.getActiveSheet().getRange('B14').setFormula("=IF(REGEXMATCH($F$26,\"CAD\"),\"CAD\",IF(REGEXMATCH($F$25,\"CAD\"),\"CAD\",IF(REGEXMATCH($F$27,\"CAD\"),\"CAD\",\"USD\")))"); //Currency
+      SpreadsheetApp.getActiveSheet().getRange('B15').setFormula("=IF(B14=\"USD\",B5,SUBSTITUTE($F$27,\" (CAD)\",\"\"))"); //Purchase Amount  
       SpreadsheetApp.getActiveSheet().getRange('B16').setValue(''); //Order #
       SpreadsheetApp.getActiveSheet().getRange('B17').setValue('0'); //Balance 
       SpreadsheetApp.getActiveSheet().getRange('B18').setValue('Score Autoreleased'); //Approver
@@ -241,13 +241,9 @@
       SpreadsheetApp.getActiveSheet().getRange('B19:B20').setValue('No'); //Verification | Represented
       SpreadsheetApp.getActiveSheet().getRange('B21:B26').setValue(''); //Rep Reason --> Documentation 4
       SpreadsheetApp.getActiveSheet().getRange('B17').setValue('0'); //Balance
-      SpreadsheetApp.getActiveSheet().getRange('E3:F14').setValue(''); // Paste Area
+      SpreadsheetApp.getActiveSheet().getRange('E3:F36').setValue(''); // Paste Area
       SpreadsheetApp.getActiveSheet().getRange('E3').setValue('Ctrl+SHIFT+V'); //Paste Cell
-      SpreadsheetApp.getActiveSheet().getRange('E7').setValue('Amount:');
-      SpreadsheetApp.getActiveSheet().getRange('E8').setValue('Trans Date:');
-      SpreadsheetApp.getActiveSheet().getRange('E9').setValue('Case #:');
-      SpreadsheetApp.getActiveSheet().getRange('E10').setValue('Reason Code:');
-      SpreadsheetApp.getActiveSheet().getRange('E11').setValue('Dispute Date:');
+      SpreadsheetApp.getActiveSheet().getRange('B3').setFormula("=IF($E$8=\"Transaction date:\",$F$8,IF($E$4=\"Status\",DATEVALUE(LEFT($E$27,LEN($E$27)-10)),\"\"))"); //Trans Date
 
       var lastRow = sheet2.getLastRow(); //Find last row of WorkLog
       sheet2.insertRowAfter(lastRow); //Append a blank row to the end of the WorkLog
