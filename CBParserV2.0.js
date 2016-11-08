@@ -241,9 +241,9 @@
       SpreadsheetApp.getActiveSheet().getRange('B19:B20').setValue('No'); //Verification | Represented
       SpreadsheetApp.getActiveSheet().getRange('B21:B26').setValue(''); //Rep Reason --> Documentation 4
       SpreadsheetApp.getActiveSheet().getRange('B17').setValue('0'); //Balance
-      SpreadsheetApp.getActiveSheet().getRange('E3:F36').setValue(''); // Paste Area
+      SpreadsheetApp.getActiveSheet().getRange('E3:F39').setValue(''); // Paste Area
       SpreadsheetApp.getActiveSheet().getRange('E3').setValue('Ctrl+SHIFT+V'); //Paste Cell
-      SpreadsheetApp.getActiveSheet().getRange('B3').setFormula("=IF($E$8=\"Transaction date:\",$F$8,IF($E$4=\"Status\",DATEVALUE(LEFT($E$27,LEN($E$27)-10)),\"\"))"); //Trans Date
+      SpreadsheetApp.getActiveSheet().getRange('B3').setFormula("=IF($E$4=\"\",\"\",IF($E$8=\"Transaction date:\",$F$8,IF(REGEXMATCH($E$3,\"Case ID\"),\"ENTER MANUALLY\",INDEX($G3:$G39,MATCH(\"PDT\",$I3:$I39,0)))))"); //Trans Date
 
       var lastRow = sheet2.getLastRow(); //Find last row of WorkLog
       sheet2.insertRowAfter(lastRow); //Append a blank row to the end of the WorkLog
@@ -299,6 +299,57 @@
       SpreadsheetApp.getActiveSheet().getRange('B21:B26').setValue(''); //Rep Reason --> Documentation 4
       SpreadsheetApp.getActiveSheet().getRange('B17').setValue('0'); //Balance
       SpreadsheetApp.getActiveSheet().getRange('E3:I8').setValue(''); //Paste area
+      SpreadsheetApp.getActiveSheet().getRange('E3').setValue('Ctrl+SHIFT+V'); //Paste cell
+
+      var lastRow = sheet2.getLastRow(); //Find last row of WorkLog
+      sheet2.insertRowAfter(lastRow); //Append a blank row to the end of the WorkLog
+  }
+  
+   function SendToWorkLogJCP() { //This is the script for the JCP sheet
+
+      var sheet1 = ss.getSheetByName("JCP");
+      var rep = sheet1.getRange("B20");
+      var repvalue = rep.getValue();
+      var order = sheet1.getRange("B16");
+      var ordervalue = order.getValue();
+      var brand = sheet1.getRange("B15");
+      var purchase = sheet1.getRange("B14");
+      var approver = sheet1.getRange("B18");
+
+      SpreadsheetApp.getActiveSheet().getRange('B27').setValue(user);
+
+      if (ordervalue.indexOf('CNZ') === -1) {
+          Browser.msgBox("Please enter a valid Order #");
+          return
+      } else if (brand.getValue() == "") {
+          Browser.msgBox("Please make sure the 'Brand' field is populated");
+          return
+      } else if (purchase.getValue() == "") {
+          Browser.msgBox("Please make sure the 'Purchase Amount' field is populated");
+          return
+      } else if (approver.getValue() == "") {
+          Browser.msgBox("Please make sure the 'Approver' field is populated");
+          return
+      }
+
+      if (repvalue == 'Yes') {
+
+          sheet1.getRange("A2:Y2").copyTo(repsheet.getRange(repsheet.getLastRow() + 1, 1, 1, 7), {
+              contentsOnly: true
+          });
+          var replastRow = repsheet.getLastRow(); //Find last row of RepSheet
+          repsheet.insertRowAfter(replastRow); //Append a blank row to the end of the repsheet
+      }
+
+      sheet1.getRange("A2:Y2").copyTo(sheet2.getRange(sheet2.getLastRow() + 1, 1, 1, 7), {
+          contentsOnly: true
+      });
+      SpreadsheetApp.getActiveSheet().getRange('B9').setValue('Chargeback'); //Stage Reached
+      SpreadsheetApp.getActiveSheet().getRange('B18').setValue('Score Autoreleased'); //Approver
+      SpreadsheetApp.getActiveSheet().getRange('B19:B20').setValue('No'); //Verification | Represented
+      SpreadsheetApp.getActiveSheet().getRange('B21:B26').setValue(''); //Rep Reason --> Documentation 4
+      SpreadsheetApp.getActiveSheet().getRange('B17').setValue('0'); //Balance
+      SpreadsheetApp.getActiveSheet().getRange('E3:U3').setValue(''); //Paste area
       SpreadsheetApp.getActiveSheet().getRange('E3').setValue('Ctrl+SHIFT+V'); //Paste cell
 
       var lastRow = sheet2.getLastRow(); //Find last row of WorkLog
