@@ -4,6 +4,42 @@ SendMode, Input
 #Persistent   ; without this line the script will exit
 KeyHistory
 
+; CHARGEBACK OBJECT HOTKEY-----------------------------------------------------------------------------------------
+XButton2::
+today = %a_now%
+today += -0, days
+FormatTime, today, %today%, MM/dd/yyyy 
+
+ClipBoard = %ClipBoard%
+lastClip :=ClipBoard
+
+StringLen, length, lastClip
+if length = 15 ;If the case # is from PayPal
+{
+SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%today%{TAB}x{TAB 2}
+Sleep 10
+SendInPut x{TAB}
+Sleep 10
+SendInput ^v {Tab}x
+Sleep 10
+SendInput {Tab 3}f
+Sleep 10
+SendInput {Shift Down}{Tab 8}{Shift Up}{RIGHT}{LEFT 5}{Shift Down}{LEFT 2}{SHIFT UP}
+}
+else ;If the case # is NOT from PayPal
+{
+SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%today%{TAB 3}
+Sleep 10
+SendInPut x{TAB}
+Sleep 10
+SendInput ^v {Tab}x
+Sleep 10
+SendInput {Tab 3}f
+Sleep 10
+SendInput {Shift Down}{Tab 8}{Shift Up}{RIGHT}{LEFT 5}{Shift Down}{LEFT 2}{SHIFT UP}
+}
+return
+
 ; CUSTOM MENU -------------------------------------------------------------------------------------------------------
 Menu, MyMenu, Add, CB Accept, CBAccAction
 Menu, MyMenu, Add, Item2, Item2Action
@@ -78,12 +114,12 @@ Send ^c ; or your double-right-click action here
 }
 Return
 
-; MIDDLE CLICK PASTE PLAIN TEXT--------------------------------------------------------------------------------------
+; MIDDLE CLICK PASTE PLAIN TEXT --------------------------------------------------------------------------------------
 ~MButton::
 Clip0 = %ClipBoardAll%
    ClipBoard = %ClipBoard%       ; Convert to text
    Send ^v                       ; For best compatibility: SendPlay
-   Sleep 50                      ; Don't change clipboard while it is pasted! (Sleep > 0)
+   Sleep **********         ; Don't change clipboard while it is pasted! (Sleep > 0)
    ClipBoard = %Clip0%           ; Restore original ClipBoard
    VarSetCapacity(Clip0, 0)      ; Free memory
 Return
@@ -116,7 +152,6 @@ RButton::
 ::nem::name/email mismatch,
 ::obo::{#}OB call to number on order, 
 ::obw::{#}OB call to number on WP page, 
-::pp::paypal transaction,
 ::sa::specific amount,
 ::si::specific item mentioned in message, 
 ::ssp::self-send paypal,
@@ -155,7 +190,7 @@ SendInput %fdvar%
 Return
 
 ::failcred::
-failcredvar = Automatic credit that typically occurs when an eGC is returned was not present. Issued a manual credit.
+failcredvar = Automatic credit that typically occurs upon return was not present. Issued a manual credit.
 SendInput %failcredvar%
 Return
 
@@ -204,87 +239,22 @@ rrecvar = balance, representing (merchandise received and/or redeemed), added to
 SendInput %rrecvar% {TAB}{TAB}
 return
 
-; CHARGEBACK OBJECT HOTKEY-----------------------------------------------------------------------------------------
-XButton2::
-today = %a_now%
-today += -1, days
-FormatTime, today, %today%, MM/dd/yyyy 
-
-ClipBoard = %ClipBoard%
-lastClip :=ClipBoard
-
-StringLen, length, lastClip
-if length < 7
-return
-if length > 16
-return
-if length = 15 ;If the case # is from PayPal
-{
-SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%today%{TAB}x{TAB 2}
-Sleep 10
-SendInPut x{TAB}
-Sleep 10
-SendInput ^v {Tab}x
-Sleep 10
-SendInput {Tab 3}f
-Sleep 10
-SendInput {Shift Down}{Tab 8}{Shift Up}{RIGHT}{LEFT 5}{Shift Down}{LEFT 2}{SHIFT UP}
-}
-else ;If the case # is NOT from PayPal
-{
-SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%today%{TAB 3}
-Sleep 10
-SendInPut x{TAB}
-Sleep 10
-SendInput ^v {Tab}x
-Sleep 10
-SendInput {Tab 3}f
-Sleep 10
-SendInput {Shift Down}{Tab 8}{Shift Up}{RIGHT}{LEFT 5}{Shift Down}{LEFT 2}{SHIFT UP}
-}
-return
-
-:*:ddd::
-today = %a_now%
-today += -1, days
-FormatTime, today, %today%, MM/dd/yyyy 
-
-ClipBoard = %ClipBoard%
-lastClip :=ClipBoard
-
-StringLen, length, lastClip
-if length < 7
-return
-if length > 16
-return
-if length = 15 ;If the case # is from PayPal
-{
-SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%today%{TAB}x{TAB 2}
-Sleep 10
-SendInPut x{TAB}
-Sleep 10
-SendInput ^v {Tab}x
-Sleep 10
-SendInput {Tab 3}f
-Sleep 10
-SendInput {Shift Down}{Tab 8}{Shift Up}{RIGHT}{LEFT 5}{Shift Down}{LEFT 2}{SHIFT UP}
-}
-else ;If the case # is NOT from PayPal
-{
-SendInput {CTRL DOWN}{SHIFT DOWN}{LEFT 3}{SHIFT UP}{CTRL UP}%today%{TAB 3}
-Sleep 10
-SendInPut x{TAB}
-Sleep 10
-SendInput ^v {Tab}x
-Sleep 10
-SendInput {Tab 3}f
-Sleep 10
-SendInput {Shift Down}{Tab 8}{Shift Up}{RIGHT}{LEFT 5}{Shift Down}{LEFT 2}{SHIFT UP}
-}
-return
 
 ; RANDOM STUFF ------------------------------------------------------------------------------------------------------
 SetCapsLockState, AlwaysOff 
 SetScrollLockState, AlwaysOff 
 Capslock::Shift
 #SPACE::  Winset, Alwaysontop, , A
+
+; MASK CREDIT CARD NUMBERS IF COPIED
+------------------------------------------------------------------------------------------------------
+OnClipboardChange:
+If RegExMatch(Clipboard,"Account #")
+{
+RegExMatch(Clipboard,"\d[\d\h]{14,18}",m)
+StringReplace, Clipboard, Clipboard, %m%, %	 "**********" SubStr(m,-3)
+return
+}
+else
+return
+
